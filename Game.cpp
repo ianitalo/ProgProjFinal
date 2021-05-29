@@ -7,19 +7,24 @@ Game::Game(const std::string& filename)
 {
 	this->filename = filename;
 	over = false;
+
 	std::ifstream map(filename);
 	int maze_height, maze_length, number_of_robots = 0;
 	char x, filechar;
 	std::string newline;
+
 	map >> maze_height >> x >> maze_length;
 	maze = Maze(maze_height, maze_length);
 	map >> std::noskipws;
+
 	for (int i = 0; i < maze_height; i++) //this puts the maze into the vector
 	{
 		getline(map, newline);
+
 		for (int j = 0; j < maze_length; j++)
 		{
 			map >> filechar;
+
 			if (filechar == 'R') // find robots
 			{
 				robots.push_back(Robot(i, j)); //this way of creating will put the robots in order of their id in the vector
@@ -44,14 +49,18 @@ void Game::gameover(bool play)
 		if (player.isAlive())
 		{
 			score.TimeEnd();
+
 			cout << endl << "You have outsmarted the robots in " << score.Score() << " seconds! You are safe... for now." << endl << endl <<
 				"Please write your name so we can add you to the leaderboard" << endl;
+
 			Leaderboard LdrBrd;
 			LdrBrd.PostGameLeaderboard(filename, LdrBrd.SetUp(score), score);
 		}
 		else
 		{
-			//algo como perdeu
+			score.TimeEnd();
+
+			cout << "You DIED in " << score.Score() << " seconds! Better luck next time :D" << endl;
 		}
 	}
 }
@@ -59,6 +68,7 @@ void Game::showGameDisplay()
 {
 	bool gotsomething = false;
 	std::string display = "";
+
 	for (int i = 0; i < maze.getnumRows(); i++)
 	{
 		for (int j = 0; j < maze.getnumCols(); j++)
@@ -72,11 +82,13 @@ void Game::showGameDisplay()
 					break;
 				}
 			}
+
 			if (player.getRow() == i && player.getCol() == j && !gotsomething)
 			{
 				display += player.getSymbol();
 				gotsomething = true;
 			}
+
 			if (!gotsomething)
 			{
 				for (int k = 0; k < maze.postssize(); k++)
@@ -89,6 +101,7 @@ void Game::showGameDisplay()
 					}
 				}
 			}
+
 			if (!gotsomething)
 			{
 				display += " ";
@@ -132,6 +145,7 @@ void Game::collide(Robot& oldrobot, Robot& testrobot)
 			{
 				testrobot = oldrobot;//get old position
 				testrobot.setAsDead();
+
 				return;
 			}
 		}
@@ -149,8 +163,10 @@ bool Game::isvalid(Movement& move)
 	{
 		return true;
 	}
+
 	int playermovex = player.getCol() + move.dCol;
 	int playermovey = player.getRow() + move.dRow;
+
 	for (int k = 0; k < maze.postssize(); k++) //check if player is trying to move to a cell occupied by non-electrified post
 	{
 		if ((maze.getpost(k).getRow() == playermovey) && (maze.getpost(k).getCol() == playermovex))
@@ -165,6 +181,7 @@ bool Game::isvalid(Movement& move)
 			{
 				player.setAsDead(); //player suicide (but is a valid move)
 				over = true;
+
 				return true;
 			}
 			else
@@ -181,6 +198,7 @@ bool Game::isvalid(Movement& move)
 			if (robots[k].getsymbol() == 'r')
 			{
 				std::cout << "invalid move" << std::endl;
+
 				return false;
 			}
 			else //player tries to punch the living robot?
@@ -200,17 +218,21 @@ Movement Game::getinput()
 	bool error = true;
 	char inp;
 	Movement move;
+
 	move.dCol = 0;
 	move.dRow = 0;
+
 	while (error)
 	{
 		error = false;
 		cout << "your move: ";
 		cin >> inp;
+
 		if (cin.eof()) //surrender
 		{
 			over = true;
 			player.setAsDead();
+
 			return move;
 		}
 		else if (!cin.good() || (cin.peek() != EOF && cin.peek() != '\n')) //checks if player inputs only one char
@@ -224,16 +246,17 @@ Movement Game::getinput()
 		{
 			switch (inp)
 			{
-			case 'q': case 'Q': move.dRow = -1; move.dCol = -1; break;
-			case 'w': case 'W': move.dRow = -1; break;
-			case 'e': case 'E': move.dCol = 1; move.dRow = -1; break;
-			case 'a': case 'A': move.dCol = -1; break;
-			case 's': case 'S': break;
-			case 'd': case 'D': move.dCol = 1; break;
-			case 'z': case 'Z': move.dCol = -1; move.dRow = 1; break;
-			case 'x': case 'X': move.dRow = 1; break;
-			case 'c': case 'C': move.dRow = 1; move.dCol = 1; break;
-			default: cout << "invalid input, try again." << endl;
+				case 'q': case 'Q': move.dRow = -1; move.dCol = -1; break;
+				case 'w': case 'W': move.dRow = -1; break;
+				case 'e': case 'E': move.dCol = 1; move.dRow = -1; break;
+				case 'a': case 'A': move.dCol = -1; break;
+				case 's': case 'S': break;
+				case 'd': case 'D': move.dCol = 1; break;
+				case 'z': case 'Z': move.dCol = -1; move.dRow = 1; break;
+				case 'x': case 'X': move.dRow = 1; break;
+				case 'c': case 'C': move.dRow = 1; move.dCol = 1; break;
+				default: cout << "invalid input, try again." << endl;
+
 				cin.clear();
 				cin.ignore(INT_MAX, '\n');
 				error = true;
@@ -246,7 +269,9 @@ bool Game::play()
 {
 	Movement playermove;
 	Robot testsrobot;
+
 	score.TimeStart();
+
 	while (!over)
 	{
 		showGameDisplay();
@@ -254,6 +279,7 @@ bool Game::play()
 		{
 			playermove = getinput();
 		} while (!isvalid(playermove)); //game could be over if player suicides here
+
 		if (!over && player.isAlive()) //the game being over while the playes still alive = gate reach, so player still needs to move
 		{
 			player.move(playermove);
