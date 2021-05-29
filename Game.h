@@ -15,14 +15,21 @@ struct Movement
 #endif
 class Game {
 public:
-	Game(const std::string& filename);
-	bool play();
-	bool isvalid(Movement& move); //this will also check if player suicide
-	void showGameDisplay();
-	void gameover(bool play);
-	void collide(Robot& oldrobot, Robot& testrobot);
-	void kill_backstabed_robots();
-	Movement getinput();
+	Game(const std::string& filename);// gets info about maze's starting state.
+
+	bool play(); // main method.
+
+	bool isvalid(Movement& move); //this will also check if player suicide.
+
+	void showGameDisplay(); // shows maze state in screen.
+
+	void gameover(bool play); //method that handles everything post-game.
+
+	void collide(Robot& oldrobot, Robot& testrobot); // checks for robot collision.
+
+	void kill_backstabed_robots(); // makes sure both robots are killed if one collides from behind.
+
+	Movement getinput(); // handles player movement.
 private:
 	std::string filename;
 	timing score;
