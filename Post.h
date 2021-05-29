@@ -8,13 +8,13 @@ public:
 
 	int getCol() const { return col; };
 
-	char getSymbol() const { return type; }; // get char representation of Post
+	char getSymbol() const { return type; }; 
 
 	bool isElectrified() const { return type == '*'; };
 
 private:
 	int row, col;
-	char type; // '*' - electrified; '+'- non-electrified
+	char type; // '*' - electrified; '+'- non-electrified // 'O' - gate
 };
 
 
