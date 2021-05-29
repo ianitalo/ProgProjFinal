@@ -122,8 +122,13 @@ void menu()
 
 			cin >> reload;
 
+
 			while (!cin.good() || reload != 0)
 			{
+				if (cin.eof())
+				{
+					return;
+				}
 				cout << "this is not a valid choice, please try again." << endl;
 				cin.clear();
 				cin.ignore(INT_MAX, '\n');
@@ -137,6 +142,10 @@ void menu()
 		{
 			error = false;
 			maze_selection();
+			if (cin.eof())
+			{
+				return;
+			}
 
 			cout << endl << "type 0 to return to menu" << endl;
 
@@ -144,6 +153,10 @@ void menu()
 
 			while (!cin.good() || reload != 0)
 			{
+				if (cin.eof())
+				{
+					return;
+				}
 				cout << "this is not a valid choice, please try again." << endl;
 				cin.clear();
 				cin.ignore(INT_MAX, '\n');
@@ -159,11 +172,19 @@ void menu()
 			Leaderboard MenuLeaderboard;
 			MenuLeaderboard.OpenInMenu();
 
+			if (cin.eof())
+			{
+				return;
+			}
 			cout << endl << "type 0 to return to menu" << endl;
 			cin >> reload;
 
 			while (!cin.good() || reload != 0)
 			{
+				if (cin.eof())
+				{
+					return;
+				}
 				cout << "this is not a valid choice, please try again." << endl;
 				cin.clear();
 				cin.ignore(INT_MAX, '\n');
@@ -188,4 +209,5 @@ void menu()
 int main()
 {
 	menu();
+	return 0;
 }

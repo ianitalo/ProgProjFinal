@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <string>
+#include <fstream>
+#include <iostream>
 #include "Maze.h"
 #include "Player.h"
 #include "Robot.h"

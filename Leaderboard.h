@@ -1,6 +1,10 @@
 #pragma once
-#include "score.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
 #include <string>
+#include "score.h"
 class Leaderboard
 {
 public:

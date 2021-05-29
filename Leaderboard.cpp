@@ -1,9 +1,4 @@
 #include "leaderboard.h"
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <algorithm>
-#include <string>
 using namespace std;
 
 void Leaderboard::OpenInMenu()
@@ -77,6 +72,10 @@ string Leaderboard::SetUp(timing score)
 
 	while (name.size() > 15 || name.size() < 1)
 	{
+		if (cin.eof())
+		{
+			return"";
+		}
 		cout << "Invalid name size! please try again." << endl;
 		getline(cin, name);
 	}
@@ -111,6 +110,10 @@ string Leaderboard::SetUp(timing score)
 
 void Leaderboard::PostGameLeaderboard(const std::string& filename, string leader_string, timing score)
 {
+	if (cin.eof())
+	{
+		return;
+	}
 	string LeaderBoardName;
 	vector<string> leaderboard_string;
 	string score_line, time, trash1, trash2, screen_string;
