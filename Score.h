@@ -4,12 +4,14 @@
 class timing
 {
 public:
+
 	timing() { };
-	void TimeStart();
 
-	void TimeEnd();
+	void TimeStart(); // starting time in seconds
 
-	double Score();
+	void TimeEnd(); // end time in seconds
+
+	double Score(); // score = end time - starting time
 
 
 private:
