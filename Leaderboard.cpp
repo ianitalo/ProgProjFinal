@@ -17,10 +17,12 @@ void Leaderboard::OpenInMenu()
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
 		cin >> number;
+
 		if (cin.eof())
 		{
 			return;
 		}
+
 		if (!cin.good())
 		{
 			cout << "not a valid leaderboard number, please try again." << endl;
@@ -32,6 +34,7 @@ void Leaderboard::OpenInMenu()
 	{
 		ifstream screen;
 		screen.open("MAZE_0" + to_string(number) + "_WINNERS.TXT");
+
 		if (screen.is_open())
 		{
 			while (getline(screen, screen_string))
@@ -41,7 +44,7 @@ void Leaderboard::OpenInMenu()
 		}
 		else
 		{
-			cout << endl << "Map hasn't been player OR doesn't exist." << endl << endl;
+			cout << endl << "Empty list." << endl << endl;
 			return;
 		}
 	}
@@ -49,16 +52,17 @@ void Leaderboard::OpenInMenu()
 	{
 		ifstream screen;
 		screen.open("MAZE_" + to_string(number) + "_WINNERS.TXT");
+
 		if (screen.is_open())
 		{
 			while (getline(screen, screen_string))
 			{
-				cout << screen_string << endl;
+				cout << screen_string << endl; //display leaderboard
 			}
 		}
 		else
 		{
-			cout << endl << "Map hasn't been player OR doesn't exist." << endl << endl;
+			cout << endl << "Empty list." << endl << endl;
 			return;
 		}
 	}
@@ -83,6 +87,7 @@ string Leaderboard::SetUp(timing score)
 
 	double rounded_time = round(score.Score() * 1000.0) / 1000.0; // rounding time to 3 digits
 	string rounded_string = to_string(rounded_time);
+
 	for (int i = rounded_string.size() - 1; i > 0; i--) // even after rounding, a few of the 0s to the right are considered in the .size() function, this for loop is a work-around.
 	{
 		if (rounded_string[i] == '0')
@@ -94,12 +99,13 @@ string Leaderboard::SetUp(timing score)
 			break;
 		}
 	}
-	int time_size = rounded_string.size();
 
+	int time_size = rounded_string.size();
 	num_spaces = 0;                                 // 
 	num_spaces = 6 - time_size;                     // num of " " to get desired length 
 	string time_spaces(num_spaces, ' ');			//
 	string leader_string = name + "-" + time_spaces + rounded_string;
+
 	return leader_string;
 }
 
